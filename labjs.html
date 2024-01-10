@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký và Đăng nhập</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Form Đăng Ký Người Dùng</h2>
+
+    <form id="registrationForm">
+        <label for="regUsername">Tên người dùng:</label>
+        <input type="text" id="regUsername" name="regUsername" required>
+        <span id="regUsernameError" class="error"></span>
+
+        <br>
+
+        <label for="regPassword">Mật khẩu:</label>
+        <input type="password" id="regPassword" name="regPassword" required>
+        <span id="regPasswordError" class="error"></span>
+
+        <br>
+
+        <label for="confirmRegPassword">Xác nhận mật khẩu:</label>
+        <input type="password" id="confirmRegPassword" name="confirmRegPassword" required>
+        <span id="confirmRegPasswordError" class="error"></span>
+
+        <br>
+
+        <input type="submit" value="Đăng Ký">
+    </form>
+
+    <h2>Form Đăng Nhập</h2>
+
+    <form id="loginForm">
+        <label for="loginUsername">Tên người dùng:</label>
+        <input type="text" id="loginUsername" name="loginUsername" required>
+        <span id="loginUsernameError" class="error"></span>
+
+        <br>
+
+        <label for="loginPassword">Mật khẩu:</label>
+        <input type="password" id="loginPassword" name="loginPassword" required>
+        <span id="loginPasswordError" class="error"></span>
+
+        <br>
+
+        <input type="submit" value="Đăng Nhập">
+    </form>
+
+    <script>
+        // Đối tượng lưu trữ thông tin người dùng đã đăng ký
+        var registeredUsers = {};
+
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            var regUsername = document.getElementById('regUsername').value;
+            var regPassword = document.getElementById('regPassword').value;
+            var confirmRegPassword = document.getElementById('confirmRegPassword').value;
+
+            if (regUsername.length < 5) {
+                document.getElementById('regUsernameError').innerHTML = 'Tên người dùng phải có ít nhất 5 ký tự';
+                event.preventDefault();
+            } else {
+                document.getElementById('regUsernameError').innerHTML = '';
+            }
+
+            if (regPassword.length < 8) {
+                document.getElementById('regPasswordError').innerHTML = 'Mật khẩu phải có ít nhất 8 ký tự';
+                event.preventDefault();
+            } else {
+                document.getElementById('regPasswordError').innerHTML = '';
+            }
+
+            if (regPassword !== confirmRegPassword) {
+                document.getElementById('confirmRegPasswordError').innerHTML = 'Mật khẩu xác nhận không khớp';
+                event.preventDefault();
+            } else {
+                document.getElementById('confirmRegPasswordError').innerHTML = '';
+
+                // Lưu thông tin người dùng đã đăng ký
+                registeredUsers[regUsername] = regPassword;
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            var loginUsername = document.getElementById('loginUsername').value;
+            var loginPassword = document.getElementById('loginPassword').value;
+
+            if (!registeredUsers.hasOwnProperty(loginUsername)) {
+                document.getElementById('loginUsernameError').innerHTML = 'Tên người dùng không tồn tại';
+                event.preventDefault();
+            } else {
+                document.getElementById('loginUsernameError').innerHTML = '';
+            }
+
+            if (registeredUsers[loginUsername] !== loginPassword) {
+                document.getElementById('loginPasswordError').innerHTML = 'Mật khẩu không đúng';
+                event.preventDefault();
+            } else {
+                document.getElementById('loginPasswordError').innerHTML = '';
+                alert('Đăng nhập thành công!');
+            }
+        });
+    </script>
+
+</body>
+</html>
